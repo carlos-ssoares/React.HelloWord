@@ -19,7 +19,18 @@ import './App.css';
         >
           Learn React
         </a>
+
         <p>Bla Bla Bla</p>
+
+        <a
+          className="App-link"
+          href="https://reactjs.org"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Teste Add A
+        </a>
+
       </header>
     </div>
   );
