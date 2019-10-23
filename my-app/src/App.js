@@ -3,8 +3,6 @@ import logo from './logo.svg';
 import './App.css';
 
  function App() {
-   //var element = React.createElement('h1', { className: 'greeting' }, 'Hello, world!');
-   //return element;
   return (
     <div className="App">
       <header className="App-header">
@@ -20,6 +18,16 @@ import './App.css';
         >
           Learn React
         </a>
+
+        <a
+          className="App-link"
+          href="https://reactjs.org"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Teste Add A
+        </a>
+
       </header>
     </div>
   );
