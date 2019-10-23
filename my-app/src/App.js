@@ -3,6 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 
  function App() {
+   
   return (
     <div className="App">
       <header className="App-header">
@@ -18,6 +19,8 @@ import './App.css';
         >
           Learn React
         </a>
+
+        <p>Bla Bla Bla</p>
 
         <a
           className="App-link"
