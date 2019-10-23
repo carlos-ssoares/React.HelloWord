@@ -3,8 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 
  function App() {
-   //var element = React.createElement('h1', { className: 'greeting' }, 'Hello, world!');
-   //return element;
+   
   return (
     <div className="App">
       <header className="App-header">
@@ -20,6 +19,7 @@ import './App.css';
         >
           Learn React
         </a>
+        <p>Bla Bla Bla</p>
       </header>
     </div>
   );
