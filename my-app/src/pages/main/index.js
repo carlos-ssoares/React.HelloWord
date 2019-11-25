@@ -1,68 +1,107 @@
 import React, { Component } from "react";
-import api from "../../services/api"
-import { Link } from 'react-router-dom';
-
-import "./styles.css"
+import MUIDataTable from "mui-datatables";
 
 export default class Main extends Component {
     state = {
-        products: [],
-        productInfo: {},
-        page: 1,
+        colonneTri: {    
+            nom: 'name',
+            tri: 'desc',
+        },
+        colonneFilter: {
+            name: ['John Walsh']
+        },
     }
 
-    // e executado assim que o componente e exibido    
-    componentDidMount(){
-        this.loadProducts();
-    };
-
-    loadProducts = async (page = 1) => {
-        const response = await api.get(`/products?page=${page}`);
+    getTriColumn (column) {    
+        const { colonneTri } = this.state;
         
-        // pega docs de response.data, e todo o resto garda em productInfo.
-        const { docs, ...productInfo } = response.data;
-
-        this.setState({ products: docs, productInfo, page });
-        // console.log(response.data.docs);
-    };
-
-    prevPage = () => {
-        const { page, productInfo } = this.state;
-
-        if (page === 1) return;
-
-        const pageNumber = page - 1;
-
-        this.loadProducts(pageNumber);
+        return colonneTri.nom === column ? colonneTri.tri : 'none';
     }
+    
+    getFilterColumn (column) {
+        const {colonneFilter } = this.state;
 
-    nextPage = () => {
-        const { page, productInfo } = this.state;
-
-        if (page === productInfo.pages) return;
-
-        const pageNumber = page + 1;
-
-        this.loadProducts(pageNumber);
+        return colonneFilter[column] === undefined ? [] : colonneFilter[column];
     }
 
     render() {
-        const {products, page, productInfo } = this.state;
+        const { colonneFilter,colonneTri } = this.state;
+        console.log(colonneTri);
+
+        const columns = [
+            {
+             name: "name",
+             label: "Name",
+             options: {
+                filterList: this.getFilterColumn('name'),
+                sortDirection: this.getTriColumn('name'),
+              filter: true,
+              sort: true,
+             }
+            },
+            {
+             name: "company",
+             label: "Company",
+             options: {
+                filterList: this.getFilterColumn('company'),
+                sortDirection: this.getTriColumn('company'),
+                filter: true,
+                sort: true,
+             }
+            },
+            {
+             name: "city",
+             label: "City",     
+             options: {
+                filterList: this.getFilterColumn('city'),
+                sortDirection: this.getTriColumn('city'),
+              filter: true,
+              sort: true,
+             }
+            },
+            {
+             name: "state",
+             label: "State",
+             options: {
+                filterList: this.getFilterColumn('state'),
+                sortDirection: this.getTriColumn('state'),
+              filter: true,
+              sort: true,
+             }
+            },
+           ];
+        
+           const data = [
+            { name: "Joe James", company: "Test Corp", city: "Yonkers", state: "NY" },
+            { name: "John Walsh", company: "Test Corp", city: "Hartford", state: "CT" },
+            { name: "Bob Herm", company: "Test Corp", city: "Tampa", state: "FL" },
+            { name: "James Houston", company: "Test Corp", city: "Dallas", state: "TX" },
+           ];
+        
+            const options = {                
+                filterType: 'multiselect',
+                onColumnSortChange: (column, direction) => {                    
+                    this.setState({colonneTri: {
+                            nom: column,
+                            tri: direction === 'ascending' ? 'asc' : 'desc',
+                        }                    
+                    });
+                },
+                onFilterChange: (column, filter) => {
+                    const index = columns.findIndex(col => col.name === column && col.options.filter === true);
+
+                    colonneFilter[column] = filter[index];
+                },
+              };
+        
 
         return(
-            <div className="product-list">
-                {products.map(product => (
-                    <article key={product._id}>
-                        <strong>{product.title}</strong>
-                        <p>{product.description}</p>
-                        <Link to={`/products/${product._id}`}>Acessar</Link>
-                    </article>
-                ))}
-                <div className="actions">
-                    <button disabled={page === 1} onClick={this.prevPage}>Anterior</button>
-                    <button disabled={page === productInfo.pages} onClick={this.nextPage}>Proximo</button>
-                </div>
-            </div>
+            <MUIDataTable 
+                title={"Employee List"} 
+                data={data} 
+                columns={columns} 
+                options={options} 
+            />
         );
     }
 }
